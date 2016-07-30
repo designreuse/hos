@@ -11,15 +11,26 @@ public class Patient implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String  patientname;
+    private String patientname;
     private String identify;
     private String sex;
-    private String brithday;
+    private String birthday;
     private String phone;
     private String remark;
     private String address;
-    private String histroy;
+    private String history;
     private String createtime;
+    @ManyToOne
+    @JoinColumn(name = "insuranceid")
+    private Insurance insurance;
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
+    }
 
     public String getCreatetime() {
         return createtime;
@@ -53,12 +64,12 @@ public class Patient implements Serializable {
         this.sex = sex;
     }
 
-    public String getBrithday() {
-        return brithday;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setBrithday(String brithday) {
-        this.brithday = brithday;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public String getPhone() {
@@ -85,12 +96,12 @@ public class Patient implements Serializable {
         this.address = address;
     }
 
-    public String getHistroy() {
-        return histroy;
+    public String getHistory() {
+        return history;
     }
 
-    public void setHistroy(String histroy) {
-        this.histroy = histroy;
+    public void setHistory(String history) {
+        this.history = history;
     }
 
     public Integer getId() {

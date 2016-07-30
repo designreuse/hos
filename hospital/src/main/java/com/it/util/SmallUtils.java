@@ -1,5 +1,6 @@
 package com.it.util;
 
+import com.google.common.collect.Maps;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -8,6 +9,8 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -240,8 +243,24 @@ public class SmallUtils {
         return time;
     }
 
+    public static Map<String, String> getPersonInfByIdentifyCard(String card){
 
-
+        Map<String, String> map = Maps.newHashMap();
+        String year = card.substring(6, 10);
+        String month = card.substring(10, 12);
+        String day = card.substring(12, 14);
+        String sex = card.substring(16, 17);
+        map.put("sex", Integer.valueOf(sex) % 2 == 0 ? "女" : "男");
+        map.put("birthday",year + "-" +month +"-"+day);
+        DateTime dateTime = new DateTime(
+                Integer.parseInt(year),
+                Integer.parseInt(month),
+                Integer.parseInt(day), 0, 0);
+        DateTime dateTime1 = DateTime.now();
+        Integer age = new Period(dateTime,dateTime1, PeriodType.years()).getYears();
+        map.put("age",String.valueOf(age));
+        return map;
+    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.it.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -9,6 +8,8 @@ import java.io.Serializable;
 public class Department implements Serializable{
 
     private static final long serialVersionUID = -1833309869455915842L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String deptname;
     private String createtime;

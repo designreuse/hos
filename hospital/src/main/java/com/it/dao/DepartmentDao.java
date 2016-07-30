@@ -7,6 +7,9 @@ import com.it.pojo.Disease;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
+
+@Named
 public class DepartmentDao extends PrimaryDao<Department,Integer> {
     Logger logger = LoggerFactory.getLogger(DepartmentDao.class);
 }

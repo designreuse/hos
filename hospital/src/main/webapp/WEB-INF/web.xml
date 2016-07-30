@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!--字符集过滤器-->
+    <!--字符集过滤器 只能过滤post-->
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>
@@ -24,6 +24,16 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!--Shiro过滤器-->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!--OpenSessionInView 管理session,界面显示数据完毕关闭session-->
     <filter>
         <filter-name>openSessionInView</filter-name>
@@ -36,7 +46,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--SpringMVC-->
+    <!--SpringMVC 中央控制器-->
     <servlet>
         <servlet-name>mvc</servlet-name>
         <servlet-class>

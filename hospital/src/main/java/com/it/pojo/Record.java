@@ -23,6 +23,9 @@ public class Record implements Serializable {
     private String state;
     private String createtime;
     @ManyToOne
+    @JoinColumn(name = "insuranceid")
+    private Insurance insurance;
+    @ManyToOne
     @JoinColumn(name = "patientid")
     private Patient patient;
     @ManyToOne
@@ -158,5 +161,13 @@ public class Record implements Serializable {
 
     public void setDisease(Disease disease) {
         this.disease = disease;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
     }
 }

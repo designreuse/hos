@@ -59,6 +59,8 @@ public class CharsetEncodeFilter implements Filter {
 
     }
 }
+
+
 class EncodingRequest extends HttpServletRequestWrapper {
 
     public EncodingRequest(HttpServletRequest request) {

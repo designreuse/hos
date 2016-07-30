@@ -1,10 +1,7 @@
 package com.it.pojo;
 
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -12,6 +9,8 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = -4715072283628354939L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
     private String realname;
@@ -20,12 +19,36 @@ public class User implements Serializable {
     private String sex;
     private String avator;
     private String createtime;
+    private String password;
+    private Boolean enable;
+
     @ManyToOne
     @JoinColumn(name = "deptid")
     private Department department;
-    @ManyToOne
-    @JoinColumn(name = "insurance")
-    private Insurance insurance;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;
@@ -89,5 +112,22 @@ public class User implements Serializable {
 
     public void setCreatetime(String createtime) {
         this.createtime = createtime;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", realname='" + realname + '\'' +
+                ", role='" + role + '\'' +
+                ", tel='" + tel + '\'' +
+                ", sex='" + sex + '\'' +
+                ", avator='" + avator + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", password='" + password + '\'' +
+                ", enable=" + enable +
+                ", department=" + department +
+                '}';
     }
 }
