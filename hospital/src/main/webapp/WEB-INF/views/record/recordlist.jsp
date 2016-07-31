@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/daterangepicker/daterangepicker-bs3.css">
     <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
+    <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
+    <link rel="stylesheet" href="/static/adminlte/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/static/adminlte/dist/css/skins/_all-skins.min.css">
 </head>
 <body>
 <jsp:include page="../include/header.jsp">
@@ -25,16 +28,16 @@
                         <span class="title"><i class="fa fa-search"></i> 搜索</span>
                     </div>
                     <div class="box-body search-box">
-                        <form action="" class="form-search">
-                            <input type="text" placeholder="姓名" id="patientname">
-                            <input type="text" placeholder="电话" id="phone">
+                        <form action="" class="form-inline">
+                            <input type="text" placeholder="请输入姓名" id="patientname" class="form-control" >
+                            <input type="text" placeholder="请输入电话" id="phone" class="form-control" >
                             <input type="text" id="rangepicker" class="form-control" placeholder="就诊时间">
-                            <select name="station" id="station">
+                            <select  id="station" class="form-control">
                                 <option value="">请选择状态</option>
                                 <option value="就诊">就诊</option>
                                 <option value="出院">出院</option>
                             </select>
-                            <button class="button button-flat-primary button-pill"><i class="fa fa-search"></i> 搜索</button>
+                            <button type="button" class="button button-primary" id="search"><i class="fa fa-search"></i> 搜索</button>
                         </form>
                     </div>
                 </div>
@@ -42,53 +45,43 @@
                     <div class="box-header">
                         <span class="title"><i class="fa fa-stethoscope"></i> 就诊列表</span>
                         <ul class="unstyled inline pull-right">
-                            <li><a href="new-visit.html"><i class="fa fa-plus"></i> 新建</a></li>
+                            <li><a href="/record/add"><i class="fa fa-plus"></i> 新建</a></li>
                         </ul>
                     </div>
                     <div class="box-body">
                         <table class="table" id="showTable">
                             <thead>
                             <tr>
-                                <th width="100">姓名</th>
-                                <th width="50">性别</th>
-                                <th width="150">科室</th>
-                                <th width="200">病种</th>
-                                <th>初步诊断</th>
-                                <th width="50">状态</th>
-                                <th width="100">创建日期</th>
+                                <th >#</th>
+                                <th >姓名</th>
+                                <th >性别</th>
+                                <th >科室</th>
+                                <th >病种</th>
+                                <th >初步诊断</th>
+                                <th >状态</th>
+                                <th >创建日期</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="patient.html">张晓明</a></td>
-                                <td>男</td>
-                                <td>内科</td>
-                                <td>流感</td>
-                                <td>流行性感冒</td>
-                                <td>在诊</td>
-                                <td>2014-07-09</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-
             </div>
-
         </div>
     </div>
-
-
-
 </div>
 <script src="/static/js/jquery-2.2.3.min.js"></script>
-<script src="/static/js/bootstrap.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/moment/moment.min.js"></script>
 <script src="/static/daterangepicker/daterangepicker.js"></script>
 <script src="/static/adminlte/plugins/pace/pace.min.js"></script>
 <script src="/static/datatable/js/jquery.dataTables.min.js"></script>
 <script src="/static/datatable/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="/static/adminlte/plugins/fastclick/fastclick.js"></script>
+<script src="/static/adminlte/dist/js/app.min.js"></script>
+<script src="/static/adminlte/dist/js/demo.js"></script>
 <script>
     $(function(){
         var begin = '';
@@ -163,8 +156,20 @@
                 }
             },
             columns: [
-                {"data": "id"}
-
+                {"data": "id"},
+                {"data": "patientname"},
+                {"data":function(row){
+                    return row.patient.sex;
+                }},
+                {"data":function(row){
+                    return row.user.department.deptname;
+                }},
+                {"data": function(row){
+                    return row.disease.sick;
+                }},
+                {"data":"content"},
+                {"data":"station"},
+                {"data":"createtime"}
             ],
             "language": { //定义中文
                 "search": "输入关键词(客户):",
@@ -187,9 +192,10 @@
             ]
         });
 
-
-
-
+        // 搜索记录
+        $("#search").click(function(){
+            dataTable.ajax.reload();
+        });
     });
 
 </script>

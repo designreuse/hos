@@ -2,6 +2,7 @@ package com.it.dao;
 
 
 import com.google.common.collect.Maps;
+import com.it.pojo.Patient;
 import com.it.pojo.Search;
 import com.it.util.Page;
 import org.hibernate.Criteria;
@@ -90,46 +91,7 @@ public class PrimaryDao<T, PK extends Serializable> {
     }
 
 
-    private Criterion buildCondition(String type, String property, Object value) {
 
-        Class<?> obj = Restrictions.class;
-        Method[] methods = obj.getMethods();
-        Map<String, Method> map = Maps.newHashMap();
-        for (Method method : methods) {
-            System.out.println(method.getName());
-            map.put(method.getName(), method);
-        }
-
-        if ("eq".equalsIgnoreCase(type)) {
-            return Restrictions.eq(property, value);
-        } else if ("like".equalsIgnoreCase(type)) {
-            return Restrictions.like(property, value.toString(), MatchMode.ANYWHERE);
-        } else if("ge".equalsIgnoreCase(type)){
-            return Restrictions.ge(property,value);
-        }else if("gt".equalsIgnoreCase(type)){
-            return Restrictions.gt(property,value);
-        }else if("le".equalsIgnoreCase(type)){
-            return Restrictions.le(property,value);
-        }else if("lt".equalsIgnoreCase(type)){
-            return Restrictions.lt(property,value);
-        }
-        return null;
-    }
-
-    /**
-     * 查询
-     */
-    public Page<T> findByPageNumber(Integer pageNo, Integer pageSzie) {
-        Integer total = count().intValue();
-        // 记录总数、每页记录条数、起始页
-        Page<T> page = new Page<>(total, pageSzie, pageNo);
-        Criteria criteria = getSession().createCriteria(entityClass);
-        criteria.setFirstResult(page.getStart());
-        criteria.setMaxResults(page.getBars());
-        List<T> result = criteria.list();
-        page.setItems(result);
-        return page;
-    }
     /**
      * 无参条件查询总数
      */
@@ -157,27 +119,27 @@ public class PrimaryDao<T, PK extends Serializable> {
         criteria.setResultTransformer(resultTransformer);
         return count;
     }
+
     /**
-     * 条件查询
+     * 条件查询总数
      */
 
-    public Page<T> findByPageNumber(Integer pageNo, Integer pageSzie, List<Search> searchList) {
-        Criteria criteria = buildCriteriaBySearchParams(searchList);
-        Integer total = count(criteria).intValue();
+    public Long queryCount(List<Search> searches) {
+        Criteria criteria = buildCriteriaBySearchParams(searches);
+        criteria.setProjection(Projections.rowCount());
+        return (Long) criteria.uniqueResult();
+    }
 
-        Page<T> page = new Page<>(total, pageSzie, pageNo);
-        criteria.setFirstResult(page.getStart());
-        criteria.setMaxResults(page.getBars());
-        List<T> result = criteria.list();
-        page.setItems(result);
-        return page;
-
+    /**
+     * 根据searchlist 查找集合
+     */
+    public List<T> queryByParameters(List<Search> searchList){
+        return buildCriteriaBySearchParams(searchList).list();
     }
 
     /**
      * 获取 Criteria 对象 含有搜索条件
      */
-
     private Criteria buildCriteriaBySearchParams(List<Search> searchList) {
 
         Criteria criteria = getSession().createCriteria(entityClass);
@@ -191,21 +153,44 @@ public class PrimaryDao<T, PK extends Serializable> {
             if(value == null){
                 continue;
             }
-            if (property.contains("_or_")) {
-                String[] array = property.split("_or_");
-                Disjunction disjunction = Restrictions.disjunction();
-                for (String str : array) {
-                    disjunction.add(buildCondition(type,str,value));
-                }
-                criteria.add(disjunction);
+            if("ps".equals(type)){
+                criteria.setFirstResult(Integer.parseInt(value.toString()));
+                continue;
+            }
+            if("pl".equals(type)){
+                criteria.setMaxResults(Integer.parseInt(value.toString()));
+                continue;
+            }
+            if (property.contains(".")) {
+               criteria.add(Restrictions.eq("patient.phone",value));
             } else {
                 criteria.add(buildCondition(type,property,value));
-
             }
         }
         return criteria;
     }
 
+    /**
+     * 创建criteria
+     */
+
+    private Criterion buildCondition(String type, String property, Object value) {
+
+        if ("eq".equalsIgnoreCase(type)) {
+            return Restrictions.eq(property, value);
+        } else if ("like".equalsIgnoreCase(type)) {
+            return Restrictions.like(property, value.toString(), MatchMode.ANYWHERE);
+        } else if("ge".equalsIgnoreCase(type)){
+            return Restrictions.ge(property,value);
+        }else if("gt".equalsIgnoreCase(type)){
+            return Restrictions.gt(property,value);
+        }else if("le".equalsIgnoreCase(type)){
+            return Restrictions.le(property,value);
+        }else if("lt".equalsIgnoreCase(type)){
+            return Restrictions.lt(property,value);
+        }
+        return null;
+    }
 
 
 }

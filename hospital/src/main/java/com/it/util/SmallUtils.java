@@ -1,5 +1,6 @@
 package com.it.util;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -11,10 +12,13 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+import org.junit.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,10 +60,10 @@ public class SmallUtils {
                     throw new RuntimeException("method.invoke(?) 抛出异常", e);
                 }
             }
-        } 
-		if(count == objects.length ){
-			return objects;
-		}
+        }
+        if (count == objects.length) {
+            return objects;
+        }
         Object[] objects1 = new Object[count];
         int n = 0;
         for (Object obj : objects) {
@@ -112,7 +116,6 @@ public class SmallUtils {
     }
 
     /**
-     *
      * @param time1 第一个时间
      * @param time2 第二个时间
      * @return ture 则 time1 > time2 ,否则相反。
@@ -121,70 +124,72 @@ public class SmallUtils {
         return time1.compareTo(time2) > 0;
     }
 
-    public static String getStartOfDay(){
-       return new DateTime().millisOfDay().withMinimumValue().toString("MM-dd HH:mm:ss:SSS");
+    public static String getStartOfDay() {
+        return new DateTime().millisOfDay().withMinimumValue().toString("MM-dd HH:mm:ss:SSS");
 
     }
+
     // toLocalDate() 是获取当地时间，可以不加
-    public static String getEndOfDay(){
-        return  new DateTime().millisOfDay().withMaximumValue().toString("MM-dd HH:mm:ss:SSS");
+    public static String getEndOfDay() {
+        return new DateTime().millisOfDay().withMaximumValue().toString("MM-dd HH:mm:ss:SSS");
     }
 
-    public static String getStartOfWeek(){
+    public static String getStartOfWeek() {
         return new DateTime().dayOfWeek().withMinimumValue().toString("MM-dd HH:mm:ss:SSS");
     }
-    public static String getEndOfWeek(){
+
+    public static String getEndOfWeek() {
         return new DateTime().dayOfWeek().withMaximumValue().toString("MM-dd HH:mm:ss:SSS");
     }
 
-    public static String transtoISO(String str){
-        if(StringUtils.isNotEmpty(str)){
+    public static String transtoISO(String str) {
+        if (StringUtils.isNotEmpty(str)) {
             try {
-                return new String(str.getBytes("utf-8"),"ISO8859-1");
+                return new String(str.getBytes("utf-8"), "ISO8859-1");
             } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("转码异常",e);
+                throw new RuntimeException("转码异常", e);
             }
         }
         return "";
     }
 
-    public static String transtoUTF8(String str){
-        if(StringUtils.isNotEmpty(str)){
+    public static String transtoUTF8(String str) {
+        if (StringUtils.isNotEmpty(str)) {
             try {
-                return new String(str.getBytes("ISO8859-1"),"UTF-8");
+                return new String(str.getBytes("ISO8859-1"), "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("转码异常",e);
+                throw new RuntimeException("转码异常", e);
             }
         }
         return "";
     }
 
-    public static String getRemoteIp(HttpServletRequest request){
+    public static String getRemoteIp(HttpServletRequest request) {
         String ip = request.getRemoteAddr();
-        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1":ip;
+        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
     }
 
     /**
-     *
      * @param str 输入中文
      * @return 返回汉语拼音
      */
-    public static String transToPinyin(String str)  {
+    public static String transToPinyin(String str) {
 
-        HanyuPinyinOutputFormat  format = new HanyuPinyinOutputFormat();
+        HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
         format.setCaseType(HanyuPinyinCaseType.LOWERCASE); // 小写
         format.setToneType(HanyuPinyinToneType.WITHOUT_TONE); // 不要音调
         format.setVCharType(HanyuPinyinVCharType.WITH_V); //使用V
         try {
-            return PinyinHelper.toHanYuPinyinString(str,format,"",true);
+            return PinyinHelper.toHanYuPinyinString(str, format, "", true);
         } catch (BadHanyuPinyinOutputFormatCombination ex) {
             ex.printStackTrace();
-            throw new RuntimeException("转换拼音异常",ex);
+            throw new RuntimeException("转换拼音异常", ex);
         }
     }
 
     /**
      * 将时间转换为相对时间
+     *
      * @param time 时间字符串 exp : 2016-06-03 15:23:26
      * @return 相对时间
      * 1.一年之前的输出格式化时间
@@ -218,15 +223,15 @@ public class SmallUtils {
                     return i + "分钟前";
                 }
             }
-        }  else if (obj.plusMinutes(1).isAfterNow()){
+        } else if (obj.plusMinutes(1).isAfterNow()) {
             return "刚刚";
         }
-            // 获取当前时间当天的最后时间
+        // 获取当前时间当天的最后时间
         obj = obj.millisOfDay().withMaximumValue();
         if (obj.plusMonths(1).isBeforeNow() && obj.plusMonths(12).isAfterNow()) {
             for (int i = 1; i <= 12; i++) {
                 if (obj.plusMonths(i).isAfterNow()) {
-                    return i> 1 ? i + "个月前":"上个月";
+                    return i > 1 ? i + "个月前" : "上个月";
                 }
             }
         } else if (obj.plusDays(15).isBeforeNow() && obj.plusDays(31).isAfterNow()) {
@@ -243,7 +248,7 @@ public class SmallUtils {
         return time;
     }
 
-    public static Map<String, String> getPersonInfByIdentifyCard(String card){
+    public static Map<String, String> getPersonInfByIdentifyCard(String card) {
 
         Map<String, String> map = Maps.newHashMap();
         String year = card.substring(6, 10);
@@ -251,15 +256,67 @@ public class SmallUtils {
         String day = card.substring(12, 14);
         String sex = card.substring(16, 17);
         map.put("sex", Integer.valueOf(sex) % 2 == 0 ? "女" : "男");
-        map.put("birthday",year + "-" +month +"-"+day);
+        map.put("birthday", year + "-" + month + "-" + day);
         DateTime dateTime = new DateTime(
                 Integer.parseInt(year),
                 Integer.parseInt(month),
                 Integer.parseInt(day), 0, 0);
         DateTime dateTime1 = DateTime.now();
-        Integer age = new Period(dateTime,dateTime1, PeriodType.years()).getYears();
-        map.put("age",String.valueOf(age));
+        Integer age = new Period(dateTime, dateTime1, PeriodType.years()).getYears();
+        map.put("age", String.valueOf(age));
         return map;
+    }
+
+    /**
+     * 将source中的不为空的值赋给target
+     * @param source 源对象
+     * @param target 目标对象
+     */
+    public static void copyProperties(Object source, Object target) {
+
+        Assert.assertNotNull(source);
+        Assert.assertNotNull(target);
+        Class<?> typeSource = source.getClass();
+        Class<?> typeTarget = target.getClass();
+        System.out.println(typeSource);
+        System.out.println(typeTarget);
+        if (!typeSource.equals(typeTarget)) {
+            throw new RuntimeException("对象类型不匹配");
+        }
+        // 获取属性集合
+        List<String> propertys = Lists.newArrayList();
+        Field[] fs = typeSource.getDeclaredFields();
+        for (Field field : fs) {
+            String name = field.getName();
+            if (!"serialVersionUID".equals(name)) {
+                propertys.add(name);
+            }
+        }
+        Method[] methods = typeSource.getMethods();
+        // 获取类的方法
+        Map<String, Method> mapSet = Maps.newHashMap();
+        Map<String, Method> mapGet = Maps.newHashMap();
+        for (Method method : methods) {
+            String me = method.getName();
+            String name = me.substring(3);
+            if (me.startsWith("get") && !me.equals("getClass")) {
+                mapGet.put(name.toLowerCase(), method);
+            }
+            if (me.startsWith("set")) {
+                mapSet.put(name.toLowerCase(), method);
+            }
+        }
+        try {
+            for (String property : propertys) {
+                Object object = mapGet.get(property).invoke(source);
+                if (object != null) {
+                    mapSet.get(property).invoke(target, object);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("对象复制异常", e);
+        }
+
     }
 
 

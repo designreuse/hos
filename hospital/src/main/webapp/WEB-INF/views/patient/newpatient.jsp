@@ -89,7 +89,7 @@
 
 </div>
 <script src="/static/js/jquery-2.2.3.min.js"></script>
-<script src="/static/js/bootstrap.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/simditor/scripts/js/simditor-all.min.js"></script>
 <script src="http://cdn.staticfile.org/select2/3.4.8/select2.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>

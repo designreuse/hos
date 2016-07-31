@@ -19,7 +19,7 @@
 </jsp:include>
 <div class="wrapper col-sm-10 col-sm-push-1" style="background-color: transparent;">
 
-    <section class="content">
+    <section class="content" id="content">
         <div class="box box-default">
             <div class="box-header with-border " style="color: #cccccc">
                 <h1 class="box-title">用户列表</h1>
@@ -30,53 +30,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-responsive table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>用户名</th>
-                        <th>真实姓名</th>
-                        <th>角色</th>
-                        <th>电话</th>
-                        <th>性别</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${users}" var="user" varStatus="SS">
-                        <tr>
-                            <th>${SS.count}</th>
-                            <th>${user.username}</th>
-                            <th>${user.realname}</th>
-                            <th>${user.role}</th>
-                            <th>${user.tel}</th>
-                            <th>${user.sex}</th>
-                            <th>
-                                <c:choose>
-                                    <c:when test="${user.enable}">
-                                        可用
-                                    </c:when>
-                                    <c:otherwise>
-                                        冻结
-                                    </c:otherwise>
-                                </c:choose>
-                            </th>
-                            <th>
-                                <c:choose>
-                                    <c:when test="${user.enable}">
-                                        <a href="javascript:;" rel="${user.id}"  class="btn btn-danger">冻结</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="javascript:;"  rel="${user.id}"  class="btn btn-info">解冻</a>
-                                    </c:otherwise>
-                                </c:choose>
-                                <a href="javascript:;" rel="${user.id}" class="btn btn-primary">修改</a>
-                            </th>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+
             </div>
             <div class="box-footer">
 
@@ -88,13 +42,12 @@
 
 </div>
 <script src="/static/js/jquery-2.2.3.min.js"></script>
-<script src="/static/js/bootstrap.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/moment/moment.min.js"></script>
 <script src="/static/daterangepicker/daterangepicker.js"></script>
 <script src="/static/adminlte/plugins/pace/pace.min.js"></script>
 <script src="/static/datatable/js/jquery.dataTables.min.js"></script>
 <script src="/static/datatable/js/dataTables.bootstrap.min.js"></script>
-<script src="/static/adminlte/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="/static/adminlte/plugins/fastclick/fastclick.js"></script>
 <script src="/static/adminlte/dist/js/app.min.js"></script>

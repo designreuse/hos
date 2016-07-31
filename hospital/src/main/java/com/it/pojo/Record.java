@@ -10,7 +10,7 @@ public class Record implements Serializable {
     private static final long serialVersionUID = 4639151341086286284L;
     @Id
     private String id;
-    private String content;
+    private String content;  // 初步诊断
     private String symptom; // 主要症状
     private String positivesign; // 阳性体征
     private String result; // 诊断结果
@@ -20,11 +20,8 @@ public class Record implements Serializable {
     private String diseasename; // 病名
     private String username;   // 主治医生
     private String patientname; // 病人姓名
-    private String state;
+    private String station;
     private String createtime;
-    @ManyToOne
-    @JoinColumn(name = "insuranceid")
-    private Insurance insurance;
     @ManyToOne
     @JoinColumn(name = "patientid")
     private Patient patient;
@@ -123,12 +120,12 @@ public class Record implements Serializable {
         this.patientname = patientname;
     }
 
-    public String getState() {
-        return state;
+    public String getStation() {
+        return station;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStation(String station) {
+        this.station = station;
     }
 
     public String getCreatetime() {
@@ -163,11 +160,5 @@ public class Record implements Serializable {
         this.disease = disease;
     }
 
-    public Insurance getInsurance() {
-        return insurance;
-    }
 
-    public void setInsurance(Insurance insurance) {
-        this.insurance = insurance;
-    }
 }

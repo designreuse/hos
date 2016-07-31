@@ -26,6 +26,7 @@ public class UserService {
      */
     public void addNewUser(User user){
         user.setCreatetime(SmallUtils.getTime());
+        user.setEnable(true);
         userDao.save(user);
     }
 
@@ -33,7 +34,7 @@ public class UserService {
      * 更新用户信息
      */
     public void updateUserInfor(User user){
-        userDao.update(user);
+        userDao.updateUser(user);
     }
 
     /**
@@ -66,5 +67,12 @@ public class UserService {
         User user = ShiroUtil.getCurrentUser();
         String role = user.getRole();
         return "admin".equals(role) ? userDao.queryAll() : null;
+    }
+
+    /**
+     * 根据id查找用户
+     */
+    public User findUserById(Integer id) {
+        return userDao.findById(id);
     }
 }

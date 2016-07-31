@@ -45,20 +45,14 @@ public class Search {
 
     public static List<Search> getQueryParamList(HttpServletRequest request) {
         List<Search> searchList = Lists.newArrayList();
-        Map<String,Object> map = getParams(request);
-        for(Map.Entry<String,Object> entry : map.entrySet()){
+        Map<String, Object> map = getParams(request);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             String str = entry.getKey();
             Object value = entry.getValue();
-            String name = "administrator";
             // q_i_like_title
             if (str.startsWith("q_")) {
-                String[] array = str.split("_",4);
-                System.out.println("==============================================");
-                System.out.println(array[0]);
-                System.out.println(array[1]);
-                System.out.println(array[2]);
-                System.out.println(array[3]);
-                if(StringUtils.isNotEmpty(value.toString())){
+                String[] array = str.split("_", 4);
+                if (StringUtils.isNotEmpty(value.toString())) {
                     System.out.println(value);
                     Search search = new Search();
                     search.setType(array[2]);
@@ -66,7 +60,7 @@ public class Search {
                     value = transValue(value.toString(), array[1]);
                     search.setObject(value);
                     searchList.add(search);
-                    request.setAttribute(str,value);
+                    request.setAttribute(str, value);
                 }
             }
         }
@@ -75,32 +69,70 @@ public class Search {
 
     private static Object transValue(String value, String valueType) {
 
-        if("s".equalsIgnoreCase(valueType)){
-           return value;
-        } if("i".equalsIgnoreCase(valueType)){
+        if ("s".equalsIgnoreCase(valueType)) {
+            return value;
+        }
+        if ("i".equalsIgnoreCase(valueType)) {
             return Integer.parseInt(value);
-        } if("f".equalsIgnoreCase(valueType)){
+        }
+        if ("f".equalsIgnoreCase(valueType)) {
             return Float.valueOf(value);
-        } if("d".equalsIgnoreCase(valueType)){
+        }
+        if ("d".equalsIgnoreCase(valueType)) {
             return Double.valueOf(value);
-        } if("b".equalsIgnoreCase(valueType)){
+        }
+        if ("b".equalsIgnoreCase(valueType)) {
             return Boolean.valueOf(value);
         }
         return null;
     }
 
-    public static Map<String,Object> getParams(HttpServletRequest request){
+    public static Map<String, Object> getParams(HttpServletRequest request) {
         Enumeration<String> enumeration = request.getParameterNames();
-        Map<String,Object> map = Maps.newHashMap();
+        Map<String, Object> map = Maps.newHashMap();
         while (enumeration.hasMoreElements()) {
             String str = enumeration.nextElement();
             String value = request.getParameter(str);
-//            if(!value.matches("[\u4e00-\u9fa5]+")){
-//                value = SmallUtils.transtoUTF8(value);
-//            }
             System.out.println(value);
-            map.put(str,value);
+            map.put(str, value);
         }
         return map;
+    }
+
+    /**
+     * @param param 参数
+     * @param exclude 需要排除的参数
+     * @return List<Search>
+     */
+    public static List<Search> getParametersList(Map<String, String> param, String... exclude) {
+        List<Search> searches = Lists.newArrayList();
+
+        for (Map.Entry<String, String> entry : param.entrySet()) {
+            boolean flag = true;
+            String name = entry.getKey();
+            for (String str : exclude) {
+                if(name.startsWith(str)){
+                    flag = false;
+                }
+            }
+            if(!flag){
+                continue;
+            }
+            String value = entry.getValue();
+            if(StringUtils.isEmpty(value)){
+                continue;
+            }
+            Search search = new Search();
+            String[] arrays = name.split("_");
+            if (arrays.length != 2) {
+                throw new RuntimeException("查询条件出错" + name);
+            }
+            search.setType(arrays[0]);
+            search.setProperty(arrays[1]);
+            search.setObject(value);
+            searches.add(search);
+        }
+
+        return searches;
     }
 }

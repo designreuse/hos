@@ -12,7 +12,7 @@
             <li class="<c:if test="${param.menu == 'remind'}">active</c:if>"><a href="/remind"><i class="fa fa-bell-o"></i>复诊提醒</a></li>
             <li class="<c:if test="${param.menu == 'chart'}">active</c:if>"><a href="/chart"><i class="fa fa-bar-chart-o"></i>数据统计</a></li>
             <li class="dropdown <c:if test="${param.menu == 'manage'}">active</c:if>">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-cogs"></i>系统设置<b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-cogs"></i>系统设置<i class="caret"></i></a>
                 <ul class="dropdown-menu">
                     <li><a href="/manage/dept"><i class="fa fa-sitemap"></i>科室设置</a></li>
                     <li><a href="/manage/disease"><i class="fa fa-medkit"></i>病种设置</a></li>

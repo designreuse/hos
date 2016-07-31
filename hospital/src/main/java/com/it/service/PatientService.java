@@ -8,6 +8,7 @@ import com.it.pojo.Patient;
 import com.it.util.SmallUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Named
+@Transactional
 public class PatientService {
     Logger logger = LoggerFactory.getLogger(PatientService.class);
 
@@ -44,5 +46,9 @@ public class PatientService {
     public void addNewPatient(Patient patient) {
         patient.setCreatetime(SmallUtils.getTime());
         patientDao.save(patient);
+    }
+
+    public List<Patient> findByName(String name) {
+        return patientDao.findByName(name);
     }
 }

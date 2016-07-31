@@ -6,6 +6,7 @@ import com.it.dao.RecordDao;
 import com.it.dto.DataTablesResult;
 import com.it.pojo.Record;
 import com.it.service.RecordService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,13 @@ public class RecordController {
     Logger logger = LoggerFactory.getLogger(RecordController.class);
 
     @Inject
-    private RecordDao recordDao;
+    private RecordService recordService;
+
     /**
      * 获取就诊记录界面
      */
     @RequestMapping(method = RequestMethod.GET)
-    public String getRecordPage(){
+    public String getRecordPage() {
         return "record/recordlist";
     }
 
@@ -51,32 +53,42 @@ public class RecordController {
         String starts = request.getParameter("starts");
         String ends = request.getParameter("ends");
 
-//        keyword = SmallUtils.transtoUTF8(keyword);
-//        salename = SmallUtils.transtoUTF8(salename);
-//        proce = SmallUtils.transtoUTF8(proce);
-//        starts = SmallUtils.transtoUTF8(starts);
-//        if(ends != null){
-//            ends = SmallUtils.transtoUTF8(ends + " 23:59:59");
-//        } else{
-//            ends = SmallUtils.transtoUTF8(ends);
-//        }
-        Map<String, Object> param = Maps.newHashMap();
-        param.put("start", start);
-        param.put("length", length);
-        param.put("keyword", keyword);
-        param.put("patientname", patientname);
-        param.put("phone",phone);
-        param.put("station", station);
-        param.put("starts", starts);
-        param.put("ends", ends);
+        start = start == null ? "0" : start;
+        length = length == null ? "10" : length;
+        if(StringUtils.isNotEmpty(ends)){
+            ends = ends + " 23:59:59";
+        }
+        Map<String, String> param = Maps.newHashMap();
+        param.put("ps_start", start);
+        param.put("pl_length", length);
+        // param.put("keyword", keyword);
+        param.put("like_patientname", patientname);
+        param.put("eq_patient.phone", phone);
+        param.put("eq_station", station);
+        param.put("le_createtime", starts);
+        param.put("ge_createtime", ends);
 
-        List<Record> RecordList = RecordService.findRecordList(param);
-        Long total = RecordService.queryRecordTotal();
-        Long filter = RecordService.queryRecordByParams(param);
+        List<Record> records = recordService.findRecordList(param);
+        Long total = recordService.queryRecordTotal();
+        Long filter = recordService.queryRecordNumByParams(param);
 
-         // return new DataTablesResult<>(draw, RecordList, total, filter);
-        return null;
+        return new DataTablesResult<>(draw, records, total, filter);
     }
 
+    /**
+     * 添加新的就诊
+     */
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    public String addNewRecord(){
+        return "record/addrecord";
+    }
+    /**
+     * 提交就诊记录
+     */
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    public String addNewRecord(Record record){
+        recordService.addnewRecord(record);
+        return "redirect:/record";
+    }
 
 }

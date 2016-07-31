@@ -1,5 +1,6 @@
 package com.it.controller;
 
+import com.it.dto.JSONResult;
 import com.it.pojo.User;
 import com.it.service.UserService;
 import com.it.util.SmallUtils;
@@ -51,6 +52,8 @@ public class UserController {
         User user = userService.findUserByNameAndPwd(password);
         return user == null ? "false":"true";
     }
+
+
 
 
 

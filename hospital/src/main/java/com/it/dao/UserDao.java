@@ -2,6 +2,7 @@ package com.it.dao;
 
 
 import com.it.pojo.User;
+import com.it.util.SmallUtils;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ public class UserDao extends PrimaryDao<User, Integer> {
 
     /**
      * 根据username 使用hql
-     *
      * @param username 参数
      * @return user
      */
@@ -41,4 +41,13 @@ public class UserDao extends PrimaryDao<User, Integer> {
         return (User) query.uniqueResult();
     }
 
+    /**
+     * 更新用户信息
+     */
+    public void updateUser(User user) {
+        User queryUser = findById(user.getId());
+        SmallUtils.copyProperties(user, queryUser);
+        save(queryUser);
+
+    }
 }
