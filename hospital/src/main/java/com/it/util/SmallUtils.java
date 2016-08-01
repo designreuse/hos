@@ -248,6 +248,13 @@ public class SmallUtils {
         return time;
     }
 
+    /**
+     * @param card 身份证号 exp : 410156199512063589
+     * @return map 集合
+     * birthday：1995-12-06
+     * sex ： 女
+     * age ： 20
+     */
     public static Map<String, String> getPersonInfByIdentifyCard(String card) {
 
         Map<String, String> map = Maps.newHashMap();

@@ -7,6 +7,7 @@ import com.it.dto.JSONResult;
 import com.it.pojo.Insurance;
 import com.it.pojo.Patient;
 import com.it.service.PatientService;
+import org.hibernate.annotations.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -73,9 +75,10 @@ public class PatientController {
     /**
      * 获取用户信息
      */
-    @RequestMapping(value = "/info/{name:\\.+}")
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
     @ResponseBody
-    public JSONResult getUserInf(@PathVariable String name){
+    public JSONResult getUserInf(HttpServletRequest request){
+        String name = request.getParameter("name");
         List<Patient> patients = patientService.findByName(name);
         return new JSONResult(patients);
     }

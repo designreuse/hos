@@ -55,7 +55,7 @@
                                         </td>
                                         <td width="100"><strong>性别</strong></td>
                                         <td width="300" id="sex"></td>
-                                        <td width="100" ><strong>年龄</strong></td>
+                                        <td width="100"><strong>年龄</strong></td>
                                         <td id="age"></td>
                                     </tr>
                                     <tr>
@@ -74,9 +74,7 @@
                                         <td colspan="6"><strong>过敏史</strong></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6" id="history">
-
-                                        </td>
+                                        <td colspan="6" id="history"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6"><strong>备注</strong></td>
@@ -85,7 +83,6 @@
                                         <td colspan="6" id="remark"></td>
                                     </tr>
                                     </tbody>
-
                                 </table>
                             </div>
                         </div>
@@ -98,11 +95,11 @@
                                 </span>
                             </div>
                             <div class="box-body form">
-                                <form action="">
+                                <form action="/record/add">
                                     <label>科室</label>
-                                    <select name="" id=""></select>
+                                    <select name="" ></select>
                                     <label>病种</label>
-                                    <select name="" id=""></select>
+                                    <select name="" ></select>
                                     <label>初步诊断</label>
                                     <input type="text" class="span12">
                                     <label>主要症状</label>
@@ -191,33 +188,34 @@
             if ($name) {
                 var $select = $("#select");
                 $select.html("");
-                $.get("/patient/info/" + $name)
+                $.get("/patient/info", {"name": $name})
                         .done(function (result) {
                             if (result.state == 'success') {
                                 var data = result.data;
-                                if (data) {
-                                    alert("没有符合的条件！")
+                                if (!data) {
+                                    alert("没有符合的条件！");
                                 }
                                 var length = data.length;
                                 if (length >= 2) {
                                     $select.append("<option value=''>请选择</option>");
                                     for (var i = 0; i < length - 1; i++) {
                                         var item = data[i];
-                                        var option = "<option value='"+item.id+"'>"+item.patientname+":"+item.phone+"</option>";
+                                        var option = "<option value='" + item.id + "'>" + item.patientname + ":" + item.phone + "</option>";
                                         $select.append(option);
                                     }
-                                    $select.css("visibility",visible);
+                                    $select.css("visibility", visible);
                                 }
                                 var patient = data[0];
-                                $("#name").val(patient.patientname);
-                                $("#remark").val(patient.remark);
-                                $("#age").val(patient.age);
-                                $("#sex").val(patient.sex);
-                                $("#identify").val(patient.identify);
-                                $("#phone").val(patient.phone);
-                                $("#address").val(patient.address);
-                                $("#history").val(patient.history);
-                                $("#card").val(patient.insurance.card);
+                                console.log(patient);
+                                $("#name").html(patient.patientname);
+                                $("#remark").html(patient.remark);
+                                $("#age").html(patient.age);
+                                $("#sex").html(patient.sex);
+                                $("#identify").html(patient.identify);
+                                $("#phone").html(patient.phone);
+                                $("#address").html(patient.address);
+                                $("#history").html(patient.history);
+                                $("#card").html(patient.insurance.card);
 
                             }
                         })

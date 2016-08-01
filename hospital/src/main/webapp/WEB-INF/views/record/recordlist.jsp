@@ -29,37 +29,37 @@
                     </div>
                     <div class="box-body search-box">
                         <form action="" class="form-inline">
-                            <input type="text" placeholder="请输入姓名" id="patientname" class="form-control" >
-                            <input type="text" placeholder="请输入电话" id="phone" class="form-control" >
+                            <input type="text" placeholder="请输入姓名" id="patientname" class="form-control">
+                            <input type="text" placeholder="请输入电话" id="phone" class="form-control">
                             <input type="text" id="rangepicker" class="form-control" placeholder="就诊时间">
-                            <select  id="station" class="form-control">
+                            <select id="station" class="form-control">
                                 <option value="">请选择状态</option>
                                 <option value="就诊">就诊</option>
                                 <option value="出院">出院</option>
                             </select>
-                            <button type="button" class="button button-primary" id="search"><i class="fa fa-search"></i> 搜索</button>
+                            <button type="button" class="button button-primary" id="search"><i class="fa fa-search"></i>
+                                搜索
+                            </button>
                         </form>
                     </div>
                 </div>
                 <div class="box">
                     <div class="box-header">
                         <span class="title"><i class="fa fa-stethoscope"></i> 就诊列表</span>
-                        <ul class="unstyled inline pull-right">
-                            <li><a href="/record/add"><i class="fa fa-plus"></i> 新建</a></li>
-                        </ul>
+                        <a href="/record/add" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>新建</a>
                     </div>
                     <div class="box-body">
                         <table class="table" id="showTable">
                             <thead>
                             <tr>
-                                <th >#</th>
-                                <th >姓名</th>
-                                <th >性别</th>
-                                <th >科室</th>
-                                <th >病种</th>
-                                <th >初步诊断</th>
-                                <th >状态</th>
-                                <th >创建日期</th>
+                                <th>#</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>科室</th>
+                                <th>病种</th>
+                                <th>初步诊断</th>
+                                <th>状态</th>
+                                <th>创建日期</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -83,7 +83,7 @@
 <script src="/static/adminlte/dist/js/app.min.js"></script>
 <script src="/static/adminlte/dist/js/demo.js"></script>
 <script>
-    $(function(){
+    $(function () {
         var begin = '';
         var end = '';
         // daterangepicker
@@ -150,7 +150,7 @@
                 data: function (dataSource) {
                     dataSource.patientname = $("#patientname").val();
                     dataSource.phone = $("#phone").val();
-                    dataSource.station=$("#station").val();
+                    dataSource.station = $("#station").val();
                     dataSource.starts = begin;
                     dataSource.ends = end;
                 }
@@ -158,18 +158,24 @@
             columns: [
                 {"data": "id"},
                 {"data": "patientname"},
-                {"data":function(row){
-                    return row.patient.sex;
-                }},
-                {"data":function(row){
-                    return row.user.department.deptname;
-                }},
-                {"data": function(row){
-                    return row.disease.sick;
-                }},
-                {"data":"content"},
-                {"data":"station"},
-                {"data":"createtime"}
+                {
+                    "data": function (row) {
+                        return row.patient.sex;
+                    }
+                },
+                {
+                    "data": function (row) {
+                        return row.user.department.deptname;
+                    }
+                },
+                {
+                    "data": function (row) {
+                        return row.disease.sick;
+                    }
+                },
+                {"data": "content"},
+                {"data": "station"},
+                {"data": "createtime"}
             ],
             "language": { //定义中文
                 "search": "输入关键词(客户):",
@@ -193,7 +199,7 @@
         });
 
         // 搜索记录
-        $("#search").click(function(){
+        $("#search").click(function () {
             dataTable.ajax.reload();
         });
     });

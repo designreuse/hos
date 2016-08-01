@@ -16,6 +16,7 @@ public class Patient implements Serializable {
     private String sex;
     private String birthday;
     private String phone;
+    private String age;
     private String remark;
     private String address;
     private String history;
@@ -110,5 +111,13 @@ public class Patient implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }
