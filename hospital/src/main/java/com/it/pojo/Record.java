@@ -2,6 +2,7 @@ package com.it.pojo;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_record")
@@ -16,12 +17,15 @@ public class Record implements Serializable {
     private String result; // 诊断结果
     private String treatment; // 治疗方案
     private String returntime; // 复诊时间
-    private String information; // 影像资料
     private String diseasename; // 病名
     private String username;   // 主治医生
     private String patientname; // 病人姓名
     private String station;
+    private String realtive;  // 相关病史
     private String createtime;
+    // ,cascade = CascadeType.REMOVE,fetch = FetchType.EAGER
+    @OneToMany(mappedBy = "record", fetch = FetchType.EAGER)
+    private Set<Information> informationSet; // 影像资料
     @ManyToOne
     @JoinColumn(name = "patientid")
     private Patient patient;
@@ -31,6 +35,18 @@ public class Record implements Serializable {
     @ManyToOne
     @JoinColumn(name = "diseaseid")
     private Disease disease;
+    @ManyToOne
+    @JoinColumn(name = "deptid")
+    private Department department;
+
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     public String getId() {
         return id;
@@ -88,12 +104,12 @@ public class Record implements Serializable {
         this.returntime = returntime;
     }
 
-    public String getInformation() {
-        return information;
+    public Set<Information> getInformationSet() {
+        return informationSet;
     }
 
-    public void setInformation(String information) {
-        this.information = information;
+    public void setInformationSet(Set<Information> informationSet) {
+        this.informationSet = informationSet;
     }
 
     public String getDiseasename() {
@@ -160,5 +176,31 @@ public class Record implements Serializable {
         this.disease = disease;
     }
 
+    public String getRealtive() {
+        return realtive;
+    }
 
+    public void setRealtive(String realtive) {
+        this.realtive = realtive;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "id='" + id + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", station='" + station + '\'' +
+                ", realtive='" + realtive + '\'' +
+                ", patientname='" + patientname + '\'' +
+                ", username='" + username + '\'' +
+                ", diseasename='" + diseasename + '\'' +
+                ", returntime='" + returntime + '\'' +
+                ", treatment='" + treatment + '\'' +
+                ", result='" + result + '\'' +
+                ", positivesign='" + positivesign + '\'' +
+                ", symptom='" + symptom + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

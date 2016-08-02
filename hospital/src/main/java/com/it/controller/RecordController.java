@@ -2,14 +2,18 @@ package com.it.controller;
 
 
 import com.google.common.collect.Maps;
-import com.it.dao.RecordDao;
 import com.it.dto.DataTablesResult;
+import com.it.pojo.Department;
+import com.it.pojo.Disease;
 import com.it.pojo.Record;
+import com.it.service.DepartmentService;
+import com.it.service.DiseaseService;
 import com.it.service.RecordService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +30,12 @@ public class RecordController {
 
     @Inject
     private RecordService recordService;
+
+    @Inject
+    private DiseaseService diseaseService;
+
+    @Inject
+    private DepartmentService departmentService;
 
     /**
      * 获取就诊记录界面
@@ -79,16 +89,21 @@ public class RecordController {
      * 添加新的就诊
      */
     @RequestMapping(value = "/add",method = RequestMethod.GET)
-    public String addNewRecord(){
+    public String addNewRecord(Model model){
+        List<Disease> diseases = diseaseService.findAllDisease();
+        List<Department> departments = departmentService.findAllDepts();
+        model.addAttribute("diseases",diseases);
+        model.addAttribute("departments",departments);
         return "record/addrecord";
     }
     /**
      * 提交就诊记录
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @ResponseBody
     public String addNewRecord(Record record){
         recordService.addnewRecord(record);
-        return "redirect:/record";
+        return "success";
     }
 
 }

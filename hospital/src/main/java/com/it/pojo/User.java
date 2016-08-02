@@ -18,12 +18,13 @@ public class User implements Serializable {
     private String tel;
     private String sex;
     private String avator;
+
     @Column(updatable = false)
     private String createtime;
     private String password;
     private Boolean enable;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deptid")
     private Department department;
 

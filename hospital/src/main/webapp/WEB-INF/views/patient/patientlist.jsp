@@ -6,8 +6,12 @@
     <title>浙江医药</title>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/simditor/styles/simditor.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
+    <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
+    <link rel="stylesheet" href="/static/adminlte/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/static/adminlte/dist/css/skins/_all-skins.min.css">
 </head>
 <body>
 <jsp:include page="../include/header.jsp">
@@ -47,22 +51,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="record" items="${records}">
+                            <c:forEach var="patient" items="${patients}">
                                 <tr>
-                                    <td><a href="#">${record.patient.patientname}</a></td>
-                                    <td>${record.patient.sex}</td>
-                                    <td>${record.patient.phone}</td>
-                                    <td>${record.insurance.card}</td>
-                                    <td>${record.patient.address}</td>
+                                    <td><a href="#">${patient.patientname}</a></td>
+                                    <td>${patient.sex}</td>
+                                    <td>${patient.phone}</td>
+                                    <td>${patient.insurance.card}</td>
+                                    <td>${patient.address}</td>
                                     <td>${record.state}</td>
-                                    <td>${record.createtime}</td>
+                                    <td>${patient.createtime}</td>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -86,14 +89,6 @@
 
     $(function () {
 
-        var editor = new Simditor({
-            toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'ol', 'ul', 'blockquote', 'table', 'link', 'hr', 'indent', 'outdent'],
-            textarea: $('.editor1')
-        });
-        var editor2 = new Simditor({
-            toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'ol', 'ul', 'blockquote', 'table', 'link', 'hr', 'indent', 'outdent'],
-            textarea: $('.editor2')
-        });
 
 
     });

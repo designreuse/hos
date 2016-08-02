@@ -111,6 +111,10 @@ public class SmallUtils {
         return new DateTime().toString("yyyy-MM-dd HH:mm:ss");
     }
 
+    public static String getTimeCondense(){
+        return new DateTime().toString("yyyyMMddHHmmss");
+    }
+
     public static String getTime(int hours) {
         return new DateTime().plusHours(hours).toString("yyyy-MM-dd HH:mm:ss");
     }

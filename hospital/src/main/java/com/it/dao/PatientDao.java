@@ -2,11 +2,7 @@ package com.it.dao;
 
 
 import com.it.pojo.Patient;
-import com.it.pojo.User;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;

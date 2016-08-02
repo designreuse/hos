@@ -4,7 +4,6 @@ package com.it.dao;
 import com.it.pojo.User;
 import com.it.util.SmallUtils;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

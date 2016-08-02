@@ -95,36 +95,45 @@
                                 </span>
                             </div>
                             <div class="box-body form">
-                                <form action="/record/add">
+                                <form  id="addForm">
+
+                                    <input type="text" name="patientname" class="hidden">
+                                    <input type="text" name="diseasename" class="hidden">
+                                    <input type="text" name="patient.id" class="hidden">
                                     <label>科室</label>
-                                    <select name="" ></select>
+                                    <select name="department.id" class="form-control" >
+                                        <option value="">请选择科室</option>
+                                        <c:forEach items="${departments}" var="department">
+                                            <option value="${department.id}">${department.deptname}</option>
+                                        </c:forEach>
+                                    </select>
                                     <label>病种</label>
-                                    <select name="" ></select>
+                                    <select name="disease.id" class="form-control">
+                                        <option value="">请选择病症</option>
+                                        <c:forEach items="${diseases}" var="disease">
+                                            <option value="${disease.id}">${disease.sick}</option>
+                                        </c:forEach>
+                                    </select>
                                     <label>初步诊断</label>
-                                    <input type="text" class="span12">
+                                    <input type="text" name="content" class="form-control">
                                     <label>主要症状</label>
-                                    <textarea class="editor1 "></textarea>
+                                    <textarea class="editor1" name="symptom"></textarea>
                                     <label>相关病史</label>
-                                    <textarea class="editor2"></textarea>
+                                    <textarea class="editor2" name="realtive"></textarea>
                                     <label>阳性体征</label>
-                                    <textarea class="editor3"></textarea>
+                                    <textarea class="editor3" name="positivesign"></textarea>
                                     <label>检查结果</label>
-                                    <textarea class="editor4"></textarea>
+                                    <textarea class="editor4" name="result"></textarea>
                                     <label>治疗方案</label>
-                                    <textarea class="editor5"></textarea>
+                                    <textarea class="editor5" name="treatment"></textarea>
                                     <label>管床医生</label>
-                                    <input type="text">
+                                    <input type="text" class="form-control" name="username">
                                     <label>下次复诊时间</label>
-                                    <input type="text" id="nextTime">
+                                    <input type="text" id="nextTime" class="form-control" name="returntime">
                                     <label>影像资料</label>
                                     <div id="picker">选择资料</div>
-                                    <ul id="fileList" class="thumbnails">
-                                        <li id="WU_FILE_0" class="span2 upload-state-done uploadfile">
-                                            <div class="msg">正在上传...</div>
-                                        </li>
-                                    </ul>
                                     <div class="form-actions">
-                                        <button class="button button-flat-action button-pill">保存</button>
+                                        <button type="button" class="button button-flat-action button-pill" id="save">保存</button>
                                     </div>
                                 </form>
                             </div>
@@ -136,19 +145,9 @@
 
             </div>
         </div>
-
     </section>
-
-
 </div>
-<div class="container">
 
-    <div class="container-fluid">
-
-    </div>
-
-
-</div>
 <script src="/static/js/jquery-2.2.3.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/moment/moment.min.js"></script>
@@ -185,45 +184,63 @@
         });
         $("#name").on("blur", function () {
             var $name = $(this).val();
-            if ($name) {
-                var $select = $("#select");
-                $select.html("");
-                $.get("/patient/info", {"name": $name})
-                        .done(function (result) {
-                            if (result.state == 'success') {
-                                var data = result.data;
-                                if (!data) {
-                                    alert("没有符合的条件！");
-                                }
-                                var length = data.length;
-                                if (length >= 2) {
-                                    $select.append("<option value=''>请选择</option>");
-                                    for (var i = 0; i < length - 1; i++) {
-                                        var item = data[i];
-                                        var option = "<option value='" + item.id + "'>" + item.patientname + ":" + item.phone + "</option>";
-                                        $select.append(option);
-                                    }
-                                    $select.css("visibility", visible);
-                                }
-                                var patient = data[0];
-                                console.log(patient);
-                                $("#name").html(patient.patientname);
-                                $("#remark").html(patient.remark);
-                                $("#age").html(patient.age);
-                                $("#sex").html(patient.sex);
-                                $("#identify").html(patient.identify);
-                                $("#phone").html(patient.phone);
-                                $("#address").html(patient.address);
-                                $("#history").html(patient.history);
-                                $("#card").html(patient.insurance.card);
-
-                            }
-                        })
-                        .fail(function () {
-                            alert("服务器异常");
-                        });
+            if (!$name) {
+               return;
             }
+            var $select = $("#select");
+            $select.html("");
+            $.get("/patient/info", {"name": $name})
+                    .done(function (result) {
+                        if (result.state == 'success') {
+                            var data = result.data;
+                            if (!data) {
+                                alert("没有符合的条件！");
+                            }
+                            var length = data.length;
+                            if (length >= 2) {
+                                $select.append("<option value=''>请选择</option>");
+                                for (var i = 0; i < length - 1; i++) {
+                                    var item = data[i];
+                                    var option = "<option value='" + item.id + "'>" + item.patientname + ":" + item.phone + "</option>";
+                                    $select.append(option);
+                                }
+                                $select.css("visibility", visible);
+                            }
+                            var patient = data[0];
+                            console.log(patient);
+                            $("#name").html(patient.patientname);
+                            $("#remark").html(patient.remark);
+                            $("#age").html(patient.age);
+                            $("#sex").html(patient.sex);
+                            $("#identify").html(patient.identify);
+                            $("#phone").html(patient.phone);
+                            $("#address").html(patient.address);
+                            $("#history").html(patient.history);
+                            $("#card").html(patient.insurance.card);
+                            $("[name='patientname']").val(patient.patientname);
+                            $("[name='patient.id']").val(patient.id);
+                        }
+                    })
+                    .fail(function () {
+                        alert("服务器异常");
+                    });
         });
+
+        // 提交就诊记录
+        $("#save").click(function(){
+            var $addForm = $("#addForm");
+            $.post("/record/add",$addForm.serialize())
+                    .done(function(data){
+                        $("#content").prepend("<div class='alert alert-success alert-dismissible'>" +
+                                "<button type='button' class='close' data-dismiss='alert' >" +
+                                "<span aria-hidden='true'>&times;</span>" +
+                                "</button><strong>Tips:</strong>state:" + data + "</div>");
+                    })
+                    .fail(function(){
+                        alert("服务器异常");
+                    });
+        });
+
 
 
     });

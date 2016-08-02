@@ -6,8 +6,12 @@
     <title>浙江医药</title>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/simditor/styles/simditor.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
+    <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
+    <link rel="stylesheet" href="/static/adminlte/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/static/adminlte/dist/css/skins/_all-skins.min.css">
 </head>
 <body>
 <jsp:include page="../include/header.jsp">
@@ -90,9 +94,15 @@
 </div>
 <script src="/static/js/jquery-2.2.3.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/simditor/scripts/js/simditor-all.min.js"></script>
-<script src="http://cdn.staticfile.org/select2/3.4.8/select2.min.js"></script>
-<script src="/static/js/jquery.validate.min.js"></script>
+<script src="/static/moment/moment.min.js"></script>
+<script src="/static/daterangepicker/daterangepicker.js"></script>
+<script src="/static/adminlte/plugins/pace/pace.min.js"></script>
+<script src="/static/datatable/js/jquery.dataTables.min.js"></script>
+<script src="/static/datatable/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="/static/adminlte/plugins/fastclick/fastclick.js"></script>
+<script src="/static/adminlte/dist/js/app.min.js"></script>
+<script src="/static/adminlte/dist/js/demo.js"></script>
 <script>
 
     $(function () {

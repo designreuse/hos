@@ -1,9 +1,12 @@
 package com.it.service;
 
 
-
+import com.it.dao.DiseaseDao;
 import com.it.dao.RecordDao;
+import com.it.pojo.Disease;
 import com.it.pojo.Record;
+import com.it.util.ShiroUtil;
+import com.it.util.SmallUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ public class RecordService {
     @Autowired
     private RecordDao recordDao;
 
+    @Autowired
+    private DiseaseDao diseaseDao;
+
 
     public List<Record> findRecordList(Map<String, String> param) {
         return recordDao.queryList(param);
@@ -35,7 +41,21 @@ public class RecordService {
     }
 
     public void addnewRecord(Record record) {
-
-
+        record.setCreatetime(SmallUtils.getTime());
+        record.setStation("在诊");
+        record.setUser(ShiroUtil.getCurrentUser());
+        // 时间+医生id + 病人id + 病症id
+        String id = SmallUtils.getTimeCondense() + record.getUser().getId() + record.getPatient().getId() + record.getDisease().getId();
+        record.setId(id);
+        logger.debug("record is {}",record);
+        Disease disease = diseaseDao.findById(record.getDisease().getId());
+        record.setDiseasename(disease.getSick());
+        recordDao.save(record);
     }
+
+    public List<Record> findRecordList() {
+        return recordDao.temple();
+    }
+
+
 }

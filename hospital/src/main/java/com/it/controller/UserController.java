@@ -1,6 +1,5 @@
 package com.it.controller;
 
-import com.it.dto.JSONResult;
 import com.it.pojo.User;
 import com.it.service.UserService;
 import com.it.util.SmallUtils;

@@ -48,7 +48,18 @@ public class PatientService {
         patientDao.save(patient);
     }
 
+    /**
+     * 根据姓名查找病人，病人可能重名
+     */
     public List<Patient> findByName(String name) {
         return patientDao.findByName(name);
+    }
+
+
+    /**
+     * 获取所有的病人
+     */
+    public List<Patient> findAllPatients() {
+        return patientDao.queryAll();
     }
 }

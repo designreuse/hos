@@ -1,10 +1,7 @@
 package com.it.dao;
 
 
-import com.google.common.collect.Maps;
-import com.it.pojo.Patient;
 import com.it.pojo.Search;
-import com.it.util.Page;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,10 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-import java.util.Map;
 
 public class PrimaryDao<T, PK extends Serializable> {
     Logger logger = LoggerFactory.getLogger(PrimaryDao.class);
@@ -162,7 +157,7 @@ public class PrimaryDao<T, PK extends Serializable> {
                 continue;
             }
             if (property.contains(".")) {
-               criteria.add(Restrictions.eq("patient.phone",value));
+               criteria.add(Restrictions.eq(property,value));
             } else {
                 criteria.add(buildCondition(type,property,value));
             }
