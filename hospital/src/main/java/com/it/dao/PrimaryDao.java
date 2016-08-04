@@ -71,20 +71,20 @@ public class PrimaryDao<T, PK extends Serializable> {
 
     /**
      * 根据id 查找对象
-     * @param id  id值
+     *
+     * @param id id值
      * @return T
      */
-    public T findById( PK id) {
-        return (T)getSession().get(entityClass,id);
+    public T findById(PK id) {
+        return (T) getSession().get(entityClass, id);
     }
 
     /**
      * 根据id删除
      */
-    public void delete(PK id){
+    public void delete(PK id) {
         delete(findById(id));
     }
-
 
 
     /**
@@ -128,7 +128,7 @@ public class PrimaryDao<T, PK extends Serializable> {
     /**
      * 根据searchlist 查找集合
      */
-    public List<T> queryByParameters(List<Search> searchList){
+    public List<T> queryByParameters(List<Search> searchList) {
         return buildCriteriaBySearchParams(searchList).list();
     }
 
@@ -138,29 +138,41 @@ public class PrimaryDao<T, PK extends Serializable> {
     private Criteria buildCriteriaBySearchParams(List<Search> searchList) {
 
         Criteria criteria = getSession().createCriteria(entityClass);
+        criteria.createAlias("patient","patient");
         if (searchList.size() == 0) {
             return criteria;
+        }
+        if ("Record".equals(entityClass.getSimpleName())) {
+            criteria.addOrder(Order.desc("id"));
         }
         for (Search search : searchList) {
             String type = search.getType();
             String property = search.getProperty();
             Object value = search.getObject();
-            if(value == null){
+            if (value == null) {
                 continue;
             }
-            if("ps".equals(type)){
+            if ("ps".equals(type)) {
                 criteria.setFirstResult(Integer.parseInt(value.toString()));
                 continue;
             }
-            if("pl".equals(type)){
+            if ("pl".equals(type)) {
                 criteria.setMaxResults(Integer.parseInt(value.toString()));
                 continue;
             }
-            if (property.contains(".")) {
-               criteria.add(Restrictions.eq(property,value));
-            } else {
-                criteria.add(buildCondition(type,property,value));
-            }
+            criteria.add(buildCondition(type, property, value));
+//            if (property.contains(".")) {
+//                String name = property.split(".")[0];
+//                for (String str : property.split(".")) {
+//                    logger.debug("====================================");
+//                    logger.debug("str is {}", str);
+//                }
+//                criteria.add(Restrictions.eq(property, value));
+//                // 起别名  criteria.createAlias(属性名，别名)
+//                criteria.createAlias(name, name);
+//            } else {
+//
+//            }
         }
         return criteria;
     }
@@ -175,14 +187,14 @@ public class PrimaryDao<T, PK extends Serializable> {
             return Restrictions.eq(property, value);
         } else if ("like".equalsIgnoreCase(type)) {
             return Restrictions.like(property, value.toString(), MatchMode.ANYWHERE);
-        } else if("ge".equalsIgnoreCase(type)){
-            return Restrictions.ge(property,value);
-        }else if("gt".equalsIgnoreCase(type)){
-            return Restrictions.gt(property,value);
-        }else if("le".equalsIgnoreCase(type)){
-            return Restrictions.le(property,value);
-        }else if("lt".equalsIgnoreCase(type)){
-            return Restrictions.lt(property,value);
+        } else if ("ge".equalsIgnoreCase(type)) {
+            return Restrictions.ge(property, value);
+        } else if ("gt".equalsIgnoreCase(type)) {
+            return Restrictions.gt(property, value);
+        } else if ("le".equalsIgnoreCase(type)) {
+            return Restrictions.le(property, value);
+        } else if ("lt".equalsIgnoreCase(type)) {
+            return Restrictions.lt(property, value);
         }
         return null;
     }

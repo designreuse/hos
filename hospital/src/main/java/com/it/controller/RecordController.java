@@ -73,10 +73,10 @@ public class RecordController {
         param.put("pl_length", length);
         // param.put("keyword", keyword);
         param.put("like_patientname", patientname);
-        param.put("eq_patient.phone", phone);
+        param.put("like_patient.phone", phone);
         param.put("eq_station", station);
-        param.put("le_createtime", starts);
-        param.put("ge_createtime", ends);
+        param.put("ge_createtime", starts);
+        param.put("le_createtime", ends);
 
         List<Record> records = recordService.findRecordList(param);
         Long total = recordService.queryRecordTotal();

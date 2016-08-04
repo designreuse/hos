@@ -22,11 +22,12 @@ public class Record implements Serializable {
     private String patientname; // 病人姓名
     private String station;
     private String realtive;  // 相关病史
+
     private String createtime;
     // ,cascade = CascadeType.REMOVE,fetch = FetchType.EAGER
-    @OneToMany(mappedBy = "record", fetch = FetchType.EAGER)
-    private Set<Information> informationSet; // 影像资料
-    @ManyToOne
+//    @OneToMany(mappedBy = "record")
+//    private Set<Information> informationSet; // 影像资料
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patientid")
     private Patient patient;
     @ManyToOne
@@ -102,14 +103,6 @@ public class Record implements Serializable {
 
     public void setReturntime(String returntime) {
         this.returntime = returntime;
-    }
-
-    public Set<Information> getInformationSet() {
-        return informationSet;
-    }
-
-    public void setInformationSet(Set<Information> informationSet) {
-        this.informationSet = informationSet;
     }
 
     public String getDiseasename() {

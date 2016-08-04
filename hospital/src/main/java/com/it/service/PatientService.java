@@ -62,4 +62,17 @@ public class PatientService {
     public List<Patient> findAllPatients() {
         return patientDao.queryAll();
     }
+
+
+    /**
+     * 根据id查找patient
+     */
+    public Patient findPatientById(Integer id){
+        return patientDao.findById(id);
+    }
+
+
+
+
+
 }

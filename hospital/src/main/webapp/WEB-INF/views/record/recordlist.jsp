@@ -55,10 +55,13 @@
                                 <th>#</th>
                                 <th>姓名</th>
                                 <th>性别</th>
+                                <th>电话</th>
                                 <th>科室</th>
                                 <th>病种</th>
                                 <th>初步诊断</th>
                                 <th>状态</th>
+                                <th>主治医师</th>
+                                <th>管床医生</th>
                                 <th>创建日期</th>
                             </tr>
                             </thead>
@@ -165,6 +168,11 @@
                 },
                 {
                     "data": function (row) {
+                        return row.patient.phone;
+                    }
+                },
+                {
+                    "data": function (row) {
                         return row.user.department.deptname;
                     }
                 },
@@ -175,6 +183,10 @@
                 },
                 {"data": "content"},
                 {"data": "station"},
+                {"data": function(row){
+                    return row.user.username;
+                }},
+                {"data": "username"},
                 {"data": "createtime"}
             ],
             "language": { //定义中文

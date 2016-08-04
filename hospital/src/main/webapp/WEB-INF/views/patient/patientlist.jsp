@@ -58,7 +58,7 @@
                                     <td>${patient.phone}</td>
                                     <td>${patient.insurance.card}</td>
                                     <td>${patient.address}</td>
-                                    <td>${record.state}</td>
+                                    <td>${patient.station}</td>
                                     <td>${patient.createtime}</td>
                                 </tr>
                             </c:forEach>

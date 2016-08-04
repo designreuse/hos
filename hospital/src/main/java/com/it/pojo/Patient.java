@@ -25,6 +25,8 @@ public class Patient implements Serializable {
     @JoinColumn(name = "insuranceid")
     private Insurance insurance;
 
+    private String station;
+
     public Insurance getInsurance() {
         return insurance;
     }
@@ -120,4 +122,31 @@ public class Patient implements Serializable {
     public void setAge(String age) {
         this.age = age;
     }
+
+    public String getStation() {
+        return station;
+    }
+
+    public void setStation(String station) {
+        this.station = station;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", patientname='" + patientname + '\'' +
+                ", identify='" + identify + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", phone='" + phone + '\'' +
+                ", age='" + age + '\'' +
+                ", remark='" + remark + '\'' +
+                ", address='" + address + '\'' +
+                ", history='" + history + '\'' +
+                ", createtime='" + createtime + '\'' +
+                '}';
+    }
+
+
 }
