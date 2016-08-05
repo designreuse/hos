@@ -12,6 +12,15 @@
     <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
     <link rel="stylesheet" href="/static/adminlte/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/adminlte/dist/css/skins/_all-skins.min.css">
+
+    <style>
+        label{
+            margin-left: 20px;
+        }
+
+    </style>
+
+
 </head>
 <body>
 <jsp:include page="../include/header.jsp">

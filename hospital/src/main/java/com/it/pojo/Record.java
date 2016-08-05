@@ -36,18 +36,7 @@ public class Record implements Serializable {
     @ManyToOne
     @JoinColumn(name = "diseaseid")
     private Disease disease;
-    @ManyToOne
-    @JoinColumn(name = "deptid")
-    private Department department;
 
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
 
     public String getId() {
         return id;

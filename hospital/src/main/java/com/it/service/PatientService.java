@@ -45,6 +45,7 @@ public class PatientService {
      */
     public void addNewPatient(Patient patient) {
         patient.setCreatetime(SmallUtils.getTime());
+        patient.setStation("新建");
         patientDao.save(patient);
     }
 

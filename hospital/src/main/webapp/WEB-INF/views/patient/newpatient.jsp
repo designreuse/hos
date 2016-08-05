@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="/static/simditor/styles/simditor.css">
     <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
     <link rel="stylesheet" href="/static/adminlte/plugins/pace/pace.min.css">
     <link rel="stylesheet" href="/static/adminlte/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/adminlte/dist/css/skins/_all-skins.min.css">
+
+
 </head>
 <body>
 <jsp:include page="../include/header.jsp">
@@ -24,7 +26,7 @@
                 <div class="box-header">
             <span class="title">
               <i class="fa fa-plus"></i>
-              <a href="#"> 患者列表</a>/新增患者
+              <a href="/patient"> 患者列表</a>/新增患者
             </span>
                 </div>
                 <div class="box-body form">
@@ -92,17 +94,17 @@
 
 
 </div>
+
 <script src="/static/js/jquery-2.2.3.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/moment/moment.min.js"></script>
-<script src="/static/daterangepicker/daterangepicker.js"></script>
+<script src="/static/simditor/scripts/js/simditor-all.min.js"></script>
+<script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/adminlte/plugins/pace/pace.min.js"></script>
-<script src="/static/datatable/js/jquery.dataTables.min.js"></script>
-<script src="/static/datatable/js/dataTables.bootstrap.min.js"></script>
 <script src="/static/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="/static/adminlte/plugins/fastclick/fastclick.js"></script>
 <script src="/static/adminlte/dist/js/app.min.js"></script>
 <script src="/static/adminlte/dist/js/demo.js"></script>
+
 <script>
 
     $(function () {
@@ -118,7 +120,7 @@
 
         $("#identify").on("keyup", function () {
             var $value = $(this).val();
-            if($value.length !=18 ){
+            if ($value.length != 18) {
                 return;
             }
             $.get("/patient/autocomplete", {"card": $value}, function (result) {
@@ -141,7 +143,7 @@
                 identify: {
                     required: true,
                     digits: true,
-                   // rangelength: 18
+                    // rangelength: 18
                 },
                 sex: {
                     required: true,
@@ -168,7 +170,7 @@
                 },
                 identify: {
                     required: "请输入身份证号",
-                   // rangelength: "请输入身份证号共{0}位",
+                    // rangelength: "请输入身份证号共{0}位",
                     digits: "请输入数字"
 
                 },
@@ -192,13 +194,13 @@
             },
             submitHandler: function (form) {
                 $.post("/patient/new", $(form).serialize())
-                        .done(function(data){
+                        .done(function (data) {
                             $("#content").prepend("<div class='alert alert-success alert-dismissible'>" +
                                     "<button type='button' class='close' data-dismiss='alert' >" +
                                     "<span aria-hidden='true'>&times;</span>" +
                                     "</button><strong>Tips:</strong>state:" + data + "</div>");
                         })
-                        .fail(function(){
+                        .fail(function () {
                             alert("服务器异常");
                         });
             }

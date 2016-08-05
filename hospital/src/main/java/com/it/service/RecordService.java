@@ -2,8 +2,10 @@ package com.it.service;
 
 
 import com.it.dao.DiseaseDao;
+import com.it.dao.PatientDao;
 import com.it.dao.RecordDao;
 import com.it.pojo.Disease;
+import com.it.pojo.Patient;
 import com.it.pojo.Record;
 import com.it.util.ShiroUtil;
 import com.it.util.SmallUtils;
@@ -25,6 +27,9 @@ public class RecordService {
     private RecordDao recordDao;
 
     @Autowired
+    private PatientDao patientDao;
+
+    @Autowired
     private DiseaseDao diseaseDao;
 
 
@@ -40,7 +45,16 @@ public class RecordService {
         return recordDao.filter(param);
     }
 
+
     public void addnewRecord(Record record) {
+
+        // 更新病人表的状态
+        Integer patientid = record.getPatient().getId();
+        Patient patient = patientDao.findById(patientid);
+        patient.setStation("在诊");
+        patientDao.save(patient);
+
+        // 在就诊记录表里插入数据
         record.setCreatetime(SmallUtils.getTime());
         record.setStation("在诊");
         record.setUser(ShiroUtil.getCurrentUser());
